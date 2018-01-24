@@ -15,7 +15,3 @@ function makeUid(alphabet, n) {
 
 console.log( makeUid("ader21421fdsfsdggd", 10) );
 console.log( makeUid("abcdefghij123435645234", 16) );
-
-
-
-

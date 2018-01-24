@@ -1,13 +1,15 @@
-let assert = require("assert");
+let {deepStrictEqual: eq} = require("assert");
 let {encrypt, decrypt} = require("./ceasar");
+let similarText = "abcdef";
 
-let test='abcdef';
-let expected=encrypt(test, 2);
+eq(encrypt(similarText, 1), encrypt(similarText, 1));
+eq(encrypt(similarText, 2), "cdefgh");
+eq(encrypt("qwerty", 2), "sygtva");
 
-assert.ok( test === decrypt(expected, 2), "значения равны" );
-assert.deepEqual( expected, encrypt(test, 2) );
-assert( encrypt('evcdefg', 4) === "izghikl");
-assert( test !== expected,"значения не равны" );
-assert.equal( "bcdef", encrypt("abcde",1) );
+eq(decrypt(similarText, 3), decrypt(similarText, 3));
+eq(decrypt(similarText, 5), "vwxyza");
+eq(decrypt("sygtva", 2), "qwerty");
 
+
+eq(encrypt(similarText, 5), decrypt(similarText, -5));
 
