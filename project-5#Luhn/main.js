@@ -1,4 +1,5 @@
-let numbers=[1,2,3,4,5,6,7];
+let numbers=[1,2,3,4,5,6];
+let test=[4 , 5 , 6  ,1  ,2 , 6  ,1 , 2 ,1  ,2  ,3  ,4 ,5  ,4  ,6  ,4,10,1];
 
 function isCorrectly(xs) {
     xs.map( (number, i) => {
@@ -9,8 +10,7 @@ function isCorrectly(xs) {
         }
     });
    return xs.reduce( (prev ,next) => {
-        return (prev + next % 10 == 0)  ?  true : false
-    });
+        return prev+next;
+    },0) % 10 === 0;
 }
 
-console.log(isCorrectly(numbers));

@@ -3,7 +3,6 @@ function pickRandom(array) {
     return array[randomOffset];
 
 }
-
 function makeUid(alphabet, n) {
    return Array(n).fill(null).map(_ => {
        return pickRandom(alphabet);
