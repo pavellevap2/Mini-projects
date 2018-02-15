@@ -8,13 +8,6 @@
 <div class="location">
     <input type="text" id="autocomplete"
            onchange="geolocate()" >
-    <td class="label">City</td>
-    <!-- Note: Selection of address components in this example is typical.
-         You may need to adjust it for the locations relevant to your app. See
-         https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform
-    -->
-
-
 
 </div>
 <script>
@@ -23,7 +16,6 @@
         autocomplete = new google.maps.places.Autocomplete(
           (document.getElementById('autocomplete')),
             {types: ['(cities)']});
-        autocomplete.addListener('place_changed', fillInAddress);
     }
     function geolocate() {
         if (navigator.geolocation) {
@@ -37,7 +29,9 @@
     }
 
 
-
+let str = "Los Angeles, CA, USA";
+    let a = str.split(',')[0];
+    console.log(a)
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJC7Pn-RgJNxtVjdXcfyzb_fyBt2ltqu0&language=en&libraries=places&callback=initAutocomplete"
         async defer></script>
