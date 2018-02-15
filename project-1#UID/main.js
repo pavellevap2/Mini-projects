@@ -8,5 +8,3 @@ function makeUid(alphabet, n) {
        return pickRandom(alphabet);
     }).join("")
 }
-
-

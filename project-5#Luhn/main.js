@@ -1,15 +1,16 @@
 let {deepStrictEqual: eq} = require("assert");
 
 function isCorrectly(xs) {
-    xs.map( (number, i) => {
-        if( i % 2 === 0 ) {
-           return ( number * 2 > 9 ) ? (number * 2 - 9) : (number * 2);
-        }else  {
+    let zs = xs.map((number, i) => {
+        let n = number * 2;
+        if (i % 2 === 0) {
+            return (n > 9) ? (n - 9) : n;
+        } else {
             return number;
         }
     });
-   return xs.reduce( (prev ,next) => {
-        return prev+next;
+    return zs.reduce( (prev ,next) => {
+        return prev + next;
     }, 0) % 10 === 0;
 }
 
