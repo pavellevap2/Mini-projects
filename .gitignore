@@ -8,3 +8,5 @@ out
 gen
 Будет удалено .idea/
 
+# dependencies
+/node_modules
