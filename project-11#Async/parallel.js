@@ -13,7 +13,7 @@ tasks.push(functionOne, functionTwo);
 
 
 function parallel(xs, callback) {
-  return xs.forEach((x) => test.push(x(callback)));
+  return xs.forEach((x) => x(callback));
 
 }
 let result = (err, result) =>{
