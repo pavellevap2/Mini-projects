@@ -1,15 +1,15 @@
 let async = require("async");
 
 let firstFunction = (callback) => {
-    callback(null, "one", "two", "three");
+    callback(null, "first func result");
 };
 
 let secondFunction = (callback) => {
-    callback(null, "three", "four", "five");
+    callback(null, "second func result");
 };
 
 let thirdFunction = (callback) => {
-    callback(null, "six, seven, eight");
+    callback(null, "third func result");
 };
 
 async.series([
