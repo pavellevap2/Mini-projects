@@ -1,27 +1,28 @@
-let async = require("async");
-
-let stack = [];
+let tasks = [];
 
 let functionOne = (callback) => {
-    setTimeout(() =>  callback(null, "first func"),
-        2000);
+    setTimeout(() => callback(null, "first func"),
+        3000);
 };
 let functionTwo = (callback) => {
-    setTimeout(() =>  callback(null, "second func"),
-        2000);
-};
-let functionThree = (callback) => {
-    setTimeout(() =>  callback(null, "third func"),
-        2000);
+    setTimeout(() => callback(null, "sec func"),
+        1000);
 };
 
-stack.push(functionOne, functionTwo, functionThree);
+tasks.push(functionOne, functionTwo);
 
-async.parallel(stack, (err, result) => {
+
+function parallel(xs, callback) {
+  return xs.forEach((x) => test.push(x(callback)));
+
+}
+let result = (err, result) =>{
     if (err) {
-        console.log("Error :" + err);
+      return err
     } else {
-        console.log(result);
+        return result
     }
+}
 
-});
+
+parallel(tasks, result)
