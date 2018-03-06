@@ -1,28 +1,32 @@
-let tasks = [];
-
-let functionOne = (callback) => {
-    setTimeout(() => callback(null, "first func"),
+let asyncFn1 = (callback) => {
+    setTimeout(() =>  callback("first func"),
         3000);
 };
-let functionTwo = (callback) => {
-    setTimeout(() => callback(null, "sec func"),
+let asyncFn2 = (callback) => {
+   setTimeout(() => callback("second func"),
         1000);
 };
+let asyncFn3 = (callback) => {
+    setTimeout(() => callback("third func"),
+        1500);
+};
 
-tasks.push(functionOne, functionTwo);
 
+function parallel(fns, callback) {
+    fns.forEach((fn, i, arr) => {
+        fn(res =>{
 
-function parallel(xs, callback) {
-  return xs.forEach((x) => x(callback));
-
-}
-let result = (err, result) =>{
-    if (err) {
-      return err
-    } else {
-        return result
-    }
+        })
+    })
 }
 
+let asyncResultFn = ( result) => {
+   console.log(result)
+};
+parallel([
+        asyncFn1,
+        asyncFn2,
+        asyncFn3
+    ], asyncResultFn
+);
 
-parallel(tasks, result)
