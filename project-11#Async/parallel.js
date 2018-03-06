@@ -1,27 +1,32 @@
 let asyncFn1 = (callback) => {
-    setTimeout(() =>  callback("first func"),
+    setTimeout(() =>  callback("first func result"),
         3000);
 };
 let asyncFn2 = (callback) => {
-   setTimeout(() => callback("second func"),
+   setTimeout(() => callback("second func result"),
         1000);
 };
 let asyncFn3 = (callback) => {
-    setTimeout(() => callback("third func"),
-        1500);
+    setTimeout(() => callback("third func result"),
+        4500);
 };
 
 
 function parallel(fns, callback) {
-    fns.forEach((fn, i, arr) => {
-        fn(res =>{
+    let resultArr = [];
 
+    fns.forEach(fn => {
+        fn(res =>{
+            resultArr.push(res);
+            if(resultArr.length == fns.length){
+                callback(resultArr)
+            }
         })
     })
 }
 
 let asyncResultFn = ( result) => {
-   console.log(result)
+    console.log(result)
 };
 parallel([
         asyncFn1,
