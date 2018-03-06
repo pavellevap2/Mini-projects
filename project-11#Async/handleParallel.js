@@ -20,10 +20,10 @@ function done(rs) {
 let afns = [afn1, afn2, afn3];
 let rs = [];
 
-afns.forEach((fn , _, arr) => {
+afns.forEach((fn) => {
     fn(res => {
         rs.push(res);
-        if(rs.length == arr.length ){
+        if(rs.length == afns.length ){
             return done(rs);
         }
     })
