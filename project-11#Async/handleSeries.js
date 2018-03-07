@@ -13,21 +13,18 @@ function afn3(next) {
     setTimeout(() => next(null, "a3"), rand(0, 1000));
 }
 
-let nextFn =(err, result) =>{
-    if (err){
-        return err
-    } else {
-        return result
-    }
+function seriesFn(fn1, fn2, fn3 , resultFn) {
+    fn1((err, data1) => { if (err) throw err;
+      fn2((err, data2) => { if (err) throw err;
+        fn3((err, data3) => { if (err) throw err;
+            return resultFn([data1, data2, data3])
+        })
+      })
+    })
 }
 
-function seriesFn(fn1, fn2, fn3) {
-
-    return fn1((err, result) => nextFn(err, result),
-            fn2((err, result) => nextFn(err, result),
-                fn3((err, result) => nextFn(err, result))
-            )
-    )
+function asyncResultFn(resultArr) {
+    console.log(resultArr);
 }
 
-seriesFn(afn1, afn2, afn3);
+seriesFn(afn1, afn2, afn3, asyncResultFn);
