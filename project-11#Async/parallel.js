@@ -12,14 +12,15 @@ let asyncFn3 = (callback) => {
 };
 
 
-function parallel(fns, resultCallback) {
+function parallel(fns, resultFn) {
     let resultArr = [];
 
     fns.forEach(fn => {
         fn(res =>{
             resultArr.push(res);
+
             if(resultArr.length == fns.length){
-                resultCallback(resultArr)
+                resultFn(resultArr)
             }
         })
     })
