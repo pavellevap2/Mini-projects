@@ -13,11 +13,12 @@ function afn3(next) {
     setTimeout(() => next("a3"), rand(0, 1000));
 }
 
-function done(rs) {
-    console.log(...rs);
-}
 
-function seriesFn(f1, f2, f3) {
-    return f1(res => res, f2(res => res, f3(res => res)))
+function seriesFn(fn1, fn2, fn3) {
+    return fn1(res => res,
+            fn2(res => res,
+                fn3(res => res)
+            )
+    )
 }
 seriesFn(afn1, afn2, afn3)
