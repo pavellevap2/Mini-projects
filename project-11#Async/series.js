@@ -15,16 +15,25 @@ function afn3(next) {
 let fns = [afn1, afn2, afn3];
 
 function series(fns, resultFn) {
-    fns = fns.slice();
-    let resultArr =[];
+    let resultArr = [];
 
-    return fns[0](res => {
-            resultArr.push(res);
-            return fns.length > 1 ? series(fns.slice(1), resultFn) : fns.length == 1 ? resultFn(resultArr) : null
-        })
+   function go(){
+        if (!fns.length) {
+          resultFn(resultArr);
+        } else if (fns.length > 0) {
+            let firstFn = fns.shift();
+
+             firstFn(res => {
+               resultArr.push(res);
+               go()
+           })
+        }
+    }
+    go()
 }
+
 
 function asyncResultFn(result) {
   console.log(result)
 }
-series(fns, asyncResultFn)
+series(fns, asyncResultFn);
