@@ -9,34 +9,36 @@ function afn2(next) {
 function afn3(next) {
     setTimeout(() => next("a3"), 1000);
 }
-function afn4(next) {
-    setTimeout(() => next("a4"), 1000);
+function lastFn(next) {
+    setTimeout(() => next(null), 1000);
 }
 
-let fns = [afn1, afn2, afn3, afn4];
+let fns = [afn1, afn2, afn3, lastFn];
 
 function waterfall(fns, resultFn) {
-    function go() {
-        let prevFn = fns.shift();
-        let nextFn = fns[0];
-        let nextData;
+    function go(){
+        if (fns.length == 1) {
+            resultFn("done");
+        } else if (fns.length > 1) {
+            let firstFn = fns.shift();
+            let nextFn = fns[0];
+            let prevRes;
 
-        if (fns.length) {
-            nextFn(data => {
-                nextData = data
-            });
-            prevFn(data => {
-                data = nextData;
-                go()
+            firstFn(prevData => {
+                prevRes = prevData;
+                nextFn(nextData => {
+                   nextData = prevRes;
+                   go()
+                })
             })
         } else {
-            resultFn("done");
+            return 0
         }
     }
     go()
 }
 
-function asyncResultFn(resultArr) {
-    console.log(resultArr);
+function asyncResultFn(result) {
+    console.log(result);
 }
-waterfall(fns, asyncResultFn)
+waterfall(fns, asyncResultFn);
