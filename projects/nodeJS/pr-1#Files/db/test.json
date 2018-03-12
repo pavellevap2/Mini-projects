@@ -1,0 +1,14 @@
+{
+  "firstName": "Петр",
+"lastName": "Петров",
+"birthday": "01.05.1958",
+"address": {
+"streetAddress": "Ленинградский пр., 25, кв.5",
+"city": "Москва",
+"postalCode": 125000
+},
+"phoneNumbers": [
+"495 123-01-23",
+"916 777-00-77"
+]
+}
