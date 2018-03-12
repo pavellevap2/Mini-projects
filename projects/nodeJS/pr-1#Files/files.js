@@ -26,13 +26,11 @@ readText();
 function copyFile() {
     fs.readFile("./db/bigger.txt", function (err, res) {
         if (err) throw err;
-
         let resultStr = res.toString("utf-8");
-        fs.copyFile("./db/bigger.txt", "./db/copyBigger.txt", (err) => {
-            if (err) throw err;
-            console.log('bigger.txt was copied to copyBigger.txt"');
-        })
-
+    });
+    fs.copyFile("./db/bigger.txt", "./db/copyBigger.txt", (err) => {
+        if (err) throw err;
+        console.log('bigger.txt was copied to copyBigger.txt"');
     });
 }
 copyFile()

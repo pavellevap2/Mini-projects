@@ -1,2 +1,1 @@
-# Mini-projects
-### небольшие задачи
+# Mini-projects with JS and nodeJS
