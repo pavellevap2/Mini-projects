@@ -36,4 +36,4 @@ let ys =[
     ...(filterFn(xs[2]) ? [xs[2]] : []),
 ]
 console.log(ys)
-
+та
