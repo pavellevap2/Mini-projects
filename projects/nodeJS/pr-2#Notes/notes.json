@@ -1,1 +1,6 @@
-[{"text":"Go for a walk with the ferret","done":false},{"text":"Time to finish picture","done":false},{"text":"Buy more juice","done":false},{"text":"buy cigaretes","done":false},{"text":"пойти покурить","done":false},{"text":"test task","done":false},{"text":"new task","done":false}]
+[
+  {"text":"Go for a walk with the ferret","done":true},
+  {"text":"Time to finish picture","done":true},
+  {"text":"Buy more juice","done":false},
+  {"text":"buy a milk","done":false}
+]

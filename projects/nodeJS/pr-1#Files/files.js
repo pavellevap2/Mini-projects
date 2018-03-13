@@ -43,7 +43,7 @@ function copyFile(file, newFile, next) {
                 if (err) {
                     next(err)
                 } else {
-                    next(`File created at ${newFile}`)
+                    next(null)
                 }
             });
     });
