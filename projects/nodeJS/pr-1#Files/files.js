@@ -1,29 +1,29 @@
 const fs = require("fs");
 
-const dbUrl = "./db/";
-const jsonUrl = "./db/test.json";
-const txtUrl = "./db/text.txt";
-const copiedTextUrl = dbUrl + "copiedText1";
-const bigFileUrl = dbUrl + "bigFile1";
+const dbpath = "./db/";
+const jsonFile = "./db/test.json";
+const txtFile = "./db/text.txt";
+const copiedTextFile = dbpath + "copiedText1.txt";
+const bigFile = dbpath + "bigFile1.txt";
 
 function next(result) {
     console.log(result);
 }
 
 //чтение файла формата json
-function readJson(url, next) {
-    fs.readFile(url, (err, result) => {
+function readJson(file, next) {
+    fs.readFile(file, (err, result) => {
         if (err) throw err;
 
         let resultObj = JSON.parse(result);
         next(resultObj);
     });
 }
-readJson(jsonUrl, next);
+readJson(jsonFile, next);
 
 //чтение текстового файла и вывод количества слов
-function readText(url, next) {
-    fs.readFile(url, (err, result) => {
+function readText(file, next) {
+    fs.readFile(file, (err, result) => {
         if (err) throw err;
 
         let resultStr = result.toString("utf-8");
@@ -31,46 +31,46 @@ function readText(url, next) {
         next(`number of words : ${numberOfWords}`);
     });
 }
-readText(txtUrl, next);
+readText(txtFile, next);
 
 //копирование файла
-function copyFile(url, newUrl, next) {
-    let readingResult ;
+function copyFile(file, newFile, next) {
+    fs.readFile(file, "utf-8", (error, result) => {
+        if (error) throw error;
+        let readingResult = result.toString();
 
-    fs.readFile(url, (err, res) => {
-        if (err) throw err;
-        readingResult = res.toString("utf-8");
-    });
-
-    fs.writeFile(newUrl, readingResult , (err) => {
-        if (err) throw err;
-
-        next(`File created at ${newUrl}`);
+            fs.writeFile(newFile, readingResult , (err) => {
+                if (err) {
+                    next(err)
+                } else {
+                    next(`File created at ${newFile}`)
+                }
+            });
     });
 }
-copyFile(txtUrl, copiedTextUrl, next);
+copyFile(txtFile, copiedTextFile, next);
 
 //генерация текстового файла размером 1мб
-function makeBigFile(url, next) {
-    fs.writeFile(url, "init", (err) => {
-            if (err) throw err;
-    });
+function makeBigFile(file, next) {
+    fs.writeFile(file, "init", (err) => {
+        if (err) throw err;
 
-    function generateBigFile() {
-        fs.appendFile(url , "some text", err => {
-            if (err ) throw  err;
+        function generateBigFile() {
+            fs.appendFile(file , "some text", err => {
+                if (err ) throw  err;
 
-            fs.stat(url , (err, stats) => {
-                if (err) throw err;
+                fs.stat(file , (err, stats) => {
+                    if (err) throw err;
 
-                if (stats.size <= 1000000) {
-                    generateBigFile();
-                } else {
-                    next("1MB size file created !")
-                }
+                    if (stats.size <= 1000000) {
+                        generateBigFile();
+                    } else {
+                        next("1MB size file created !")
+                    }
+                })
             })
-        })
-    }
-    generateBigFile()
+        }
+        generateBigFile()
+    });
 }
-makeBigFile(bigFileUrl, next);
+makeBigFile(bigFile, next);
