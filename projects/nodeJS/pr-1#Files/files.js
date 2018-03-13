@@ -1,36 +1,76 @@
-let fs = require("fs");
+const fs = require("fs");
 
+const dbUrl = "./db/";
+const jsonUrl = "./db/test.json";
+const txtUrl = "./db/text.txt";
+const copiedTextUrl = dbUrl + "copiedText1";
+const bigFileUrl = dbUrl + "bigFile1";
 
-function readJson() {
-    fs.readFile("./db/test.json", function (err, result) {
+function next(result) {
+    console.log(result);
+}
+
+//чтение файла формата json
+function readJson(url, next) {
+    fs.readFile(url, (err, result) => {
         if (err) throw err;
 
         let resultObj = JSON.parse(result);
-        console.log(resultObj);
+        next(resultObj);
     });
 }
-readJson();
+readJson(jsonUrl, next);
 
-function readText() {
-    fs.readFile("./db/big.txt", function (err, result) {
+//чтение текстового файла и вывод количества слов
+function readText(url, next) {
+    fs.readFile(url, (err, result) => {
         if (err) throw err;
 
         let resultStr = result.toString("utf-8");
         let numberOfWords = resultStr.match(/\s+/g).length;
-        console.log(numberOfWords);
-
+        next(`number of words : ${numberOfWords}`);
     });
 }
-readText();
+readText(txtUrl, next);
 
-function copyFile() {
-    fs.readFile("./db/bigger.txt", function (err, res) {
+//копирование файла
+function copyFile(url, newUrl, next) {
+    let readingResult ;
+
+    fs.readFile(url, (err, res) => {
         if (err) throw err;
-        let resultStr = res.toString("utf-8");
+        readingResult = res.toString("utf-8");
     });
-    fs.copyFile("./db/bigger.txt", "./db/copyBigger.txt", (err) => {
+
+    fs.writeFile(newUrl, readingResult , (err) => {
         if (err) throw err;
-        console.log('bigger.txt was copied to copyBigger.txt"');
+
+        next(`File created at ${newUrl}`);
     });
 }
-copyFile()
+copyFile(txtUrl, copiedTextUrl, next);
+
+//генерация текстового файла размером 1мб
+function makeBigFile(url, next) {
+    fs.writeFile(url, "init", (err) => {
+            if (err) throw err;
+    });
+
+    function generateBigFile() {
+        fs.appendFile(url , "some text", err => {
+            if (err ) throw  err;
+
+            fs.stat(url , (err, stats) => {
+                if (err) throw err;
+
+                if (stats.size <= 1000000) {
+                    generateBigFile();
+                } else {
+                    next("1MB size file created !")
+                }
+            })
+        })
+    }
+    generateBigFile()
+}
+makeBigFile(bigFileUrl, next);
