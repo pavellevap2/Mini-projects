@@ -13,7 +13,7 @@ if (command == "list" || !command){
         })
     });
 } else if (command == "add") {
-    add(note, (error) => {
+    add(note, error => {
         if (error) throw  error;
 
         console.log("note created ")
@@ -25,25 +25,32 @@ if (command == "list" || !command){
         console.log("note removed")
     });
 } else if (command == "done"){
-    done(noteIndex, (error) => {
+    done(noteIndex, error => {
         if (error) throw error;
 
         console.log("task completed")
     })
 } else if (command == "undone") {
-    undone(noteIndex, (error) => {
+    undone(noteIndex, error => {
         if (error) throw error;
 
         console.log("task uncompleted");
     })
+} else if (command == "archive") {
+    archive(error => {
+        if (error) throw error;
+
+        console.log(`all completed notes archived`);
+    })
 }
+
 else {
     console.log("undefined command");
 }
 
 //выводится список заметок/заданий
 function list(next) {
-    fs.readFile("notes.json" , (error, data) => {
+    fs.readFile("./db/notes.json" , (error, data) => {
         if (error) next("Error" + error);
 
         const notes = JSON.parse(data);
@@ -53,14 +60,14 @@ function list(next) {
 
 //добавить заметку
 function add(text, next) {
-    fs.readFile("notes.json", (error, data) => {
+    fs.readFile("./db/notes.json", (error, data) => {
         if (error) throw  error;
 
         const notes = JSON.parse(data);
         notes.push({ text, "done" : false });
         const notesJson = JSON.stringify(notes);
 
-        fs.writeFile("notes.json", notesJson, error =>{
+        fs.writeFile("./db/notes.json", notesJson, error => {
             if (error) next("Error" + error);
 
             next()
@@ -70,14 +77,14 @@ function add(text, next) {
 
 //удалить заметку
 function remove(noteIndex , next) {
-    fs.readFile("notes.json", (error, data) => {
+    fs.readFile("./db/notes.json", (error, data) => {
         if (error) throw  error;
 
         let notes = JSON.parse(data);
         notes.splice(noteIndex - 1, 1);
         const notesJson = JSON.stringify(notes);
 
-        fs.writeFile("notes.json", notesJson, error =>{
+        fs.writeFile("./db/notes.json", notesJson, error => {
             if (error) next("Error" + error);
 
             next()
@@ -87,21 +94,14 @@ function remove(noteIndex , next) {
 
 //пометить заметку,как выполненную
 function done(noteIndex, next) {
-    fs.readFile("notes.json", (error, data) => {
+    fs.readFile("./db/notes.json", (error, data) => {
         if (error) throw  error;
 
         let notes = JSON.parse(data);
-        notes = notes.map((x, i)=>{
-            if (i == noteIndex - 1) {
-                x.done = true;
-                return x;
-            } else {
-                return x;
-            }
-        });
+        notes[noteIndex - 1].done = true;
         const notesJson = JSON.stringify(notes);
 
-        fs.writeFile("notes.json", notesJson, (error) =>{
+        fs.writeFile("./db/notes.json", notesJson, error => {
             if (error) next("Error" + error);
 
             next()
@@ -111,25 +111,49 @@ function done(noteIndex, next) {
 
 //убрать метку выполненности с заметки
 function undone(noteIndex, next) {
-    fs.readFile("notes.json", (error, data) => {
+    fs.readFile("./db/notes.json", (error, data) => {
         if (error) throw  error;
 
         let notes = JSON.parse(data);
-        notes = notes.map((x, i)=>{
-            if (i == noteIndex - 1) {
-                x.done = false;
-                return x;
-            } else {
-                return x;
-            }
-        });
+        notes[noteIndex - 1].done = false  ;
         const notesJson = JSON.stringify(notes);
 
-        fs.writeFile("notes.json", notesJson, (error) =>{
+        fs.writeFile("./db/notes.json", notesJson, error => {
             if (error) next("Error" + error);
 
             next()
         })
     })
 
+}
+
+//отправить в архив все выполненные задачи
+function archive( next) {
+    fs.readFile("./db/notes.json", (error, data) => {
+        if (error) throw  error;
+
+        let notes = JSON.parse(data);
+        const archiveNotes = notes.filter(x => x.done);
+        notes = notes.filter(x => !x.done);
+        const notesJson = JSON.stringify(notes);
+
+        fs.writeFile("./db/notes.json", notesJson, error => {
+            if (error) next("Error" + error);
+
+            fs.readFile("./db/archive.json", (error, data) => {
+                if (error) throw  error;
+
+                let archive = JSON.parse(data);
+                archive.push(archiveNotes);
+                const archiveJson = JSON.stringify(archive);
+
+                fs.writeFile("./db/archive.json", archiveJson, error => {
+                    if (error) next("Error" + error);
+
+                    next()
+                })
+            });
+
+        })
+    })
 }
